@@ -58,3 +58,7 @@ As três advertências permanecem visíveis no relatório. A regra CORP foi corr
 ## Ajuste ao enunciado original
 
 O roteiro foi corrigido para dois commits reais pelo navegador: falha por push/PR e nova correção por push. Somente workflow_dispatch não satisfaz essa exigência. Validar os disparos reais e medir o tempo no GitHub antes da aula; a execução cloud continua pendente de publicação autorizada.
+
+## Primeira execucao real no GitHub - 19/11/2026
+
+Run 44450361270: secrets, sast, iac, build e sca passaram; image falhou ao resolver o parent Spring Boot 4.1.2 no segundo build Maven, dentro do Docker. DAST e delivery ficaram bloqueados. A mesma dependencia respondeu HTTP 200 nas verificacoes locais, inclusive dentro da imagem Maven. A correcao elimina a segunda compilacao: o job image baixa application-jar produzido e testado pelo build e usa o target ci. Hashes do JAR local e do JAR empacotado foram conferidos, e o smoke HTTP passou na imagem ci. Aguardar o novo resultado completo do Actions.

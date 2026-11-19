@@ -110,6 +110,13 @@ jobs:
         path: target/surefire-reports/
         if-no-files-found: error
         retention-days: 14
+    - name: Preservar JAR testado
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: application-jar
+        path: target/tasks-api.jar
+        if-no-files-found: error
+        retention-days: 2
   sca:
     needs:
     - build
@@ -146,14 +153,19 @@ jobs:
       with:
         persist-credentials: false
         fetch-depth: 0
+    - name: Baixar JAR aprovado pelo Maven
+      uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+      with:
+        name: application-jar
+        path: target
     - name: Construir imagem
-      run: docker build -t tasks-api:${{ github.sha }} .
+      run: docker build --target ci -t tasks-api:${{ github.sha }} .
     - name: Trivy imagem - HIGH e CRITICAL
       run: |-
         mkdir -p reports
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD:/src" -w /src aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format json --output reports/trivy-image.json tasks-api:${{ github.sha }}
     - name: Preservar image-security
-      if: always()
+      if: always() && hashFiles('reports/trivy-image.json') != ''
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
       with:
         name: image-security
