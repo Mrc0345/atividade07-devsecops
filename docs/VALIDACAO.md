@@ -43,7 +43,7 @@ ValidaÃ§Ã£o local em 18/11/2026 (America/Sao_Paulo), Windows com Docker Desk
 
 - RepositÃ³rio pÃºblico: pendente.
 - Run vulnerÃ¡vel (GitHub Failure): pendente.
-- Run corrigido (GitHub Success): pendente.
+- Run corrigido (GitHub Success): 44453592404; main também aprovada em 44453536463.
 - ContingÃªncia anterior aprovada e recente: pendente.
 - SBOM baixado do Actions: pendente. O SBOM local jÃ¡ foi gerado.
 
@@ -62,3 +62,7 @@ O roteiro foi corrigido para dois commits reais pelo navegador: falha por push/P
 ## Primeira execucao real no GitHub - 19/11/2026
 
 Run 44450361270: secrets, sast, iac, build e sca passaram; image falhou ao resolver o parent Spring Boot 4.1.2 no segundo build Maven, dentro do Docker. DAST e delivery ficaram bloqueados. A mesma dependencia respondeu HTTP 200 nas verificacoes locais, inclusive dentro da imagem Maven. A correcao elimina a segunda compilacao: o job image baixa application-jar produzido e testado pelo build e usa o target ci. Hashes do JAR local e do JAR empacotado foram conferidos, e o smoke HTTP passou na imagem ci. Aguardar o novo resultado completo do Actions.
+
+## Confirmação cloud da correção
+
+Em 19/11/2026, as execuções [main 44453536463](https://github.com/Mrc0345/atividade07-devsecops/actions/runs/44453536463) e [demo/corrigido 44453592404](https://github.com/Mrc0345/atividade07-devsecops/actions/runs/44453592404) concluíram com success, incluindo DAST e delivery. A [demo/vulneravel 44453592090](https://github.com/Mrc0345/atividade07-devsecops/actions/runs/44453592090) concluiu com failure no Checkov, bloqueando build, SCA, imagem, DAST e entrega. Os artefatos SBOM, testes, SAST, SCA e imagem ficaram disponíveis. As afirmações anteriores de pendência registram etapas anteriores do trabalho e foram superadas por esta confirmação.

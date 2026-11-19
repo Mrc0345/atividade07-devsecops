@@ -2,7 +2,7 @@
 
 API de tarefas em Java 21 / Spring Boot 4.1.2, com armazenamento em memória e esteira GitHub Actions. Projeto acadêmico independente, sem frontend, banco externo, autenticação complexa ou infraestrutura paga. Professora: Ramyres Pereira Aquino.
 
-**Apresentação sem notebook configurado:** use somente navegador, internet e acesso à conta GitHub. Os runners executam Java, Docker e scanners. Veja [o roteiro pelo navegador](docs/APRESENTACAO.md). Publicação e execuções no GitHub ainda dependem da autorização do proprietário.
+**Apresentação sem notebook configurado:** use somente navegador, internet e acesso à conta GitHub. Os runners executam Java, Docker e scanners. Veja [o roteiro pelo navegador](docs/APRESENTACAO.md). Publicado em https://github.com/Mrc0345/atividade07-devsecops. Fluxos seguro e vulnerável já validados no GitHub em 19/11/2026; veja os links abaixo.
 
 ## Executar localmente
 
@@ -130,3 +130,12 @@ pom.xml, mvnw, mvnw.cmd           Build reproduzível
 Runners Linux padrão em repositórios públicos têm computação gratuita; artefatos e cache possuem franquias próprias. Confira o uso e mantenha orçamento de gastos adequado à conta. Não são usados runners grandes ou serviços pagos. [Cobrança oficial do GitHub Actions](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
 
 No GitHub Actions, o job build disponibiliza application-jar e o job image usa o target Docker ci para empacotar exatamente esse JAR testado. O build multi-stage padrao continua disponivel para uso local. Isso evita uma segunda resolucao Maven dentro do Docker e vincula a imagem ao artefato aprovado.
+
+## Execuções reais verificadas no GitHub (19/11/2026)
+
+- [Main aprovada: todos os gates, DAST e entrega](https://github.com/Mrc0345/atividade07-devsecops/actions/runs/44453536463).
+- [Demonstração corrigida aprovada](https://github.com/Mrc0345/atividade07-devsecops/actions/runs/44453592404).
+- [Demonstração vulnerável: falha esperada no Checkov](https://github.com/Mrc0345/atividade07-devsecops/actions/runs/44453592090).
+- [Primeira execução: falha de build Docker já corrigida](https://github.com/Mrc0345/atividade07-devsecops/actions/runs/44450361270).
+
+Os resultados acima são de execuções específicas e autênticas. Novos commits disparam novas execuções; consulte o status de cada commit. O roteiro continua exigindo introduzir e corrigir a falha ao vivo.

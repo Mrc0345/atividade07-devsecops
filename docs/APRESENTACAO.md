@@ -4,9 +4,9 @@ Não depende de Java, Maven, Docker, VS Code ou terminal no notebook da sala. Pr
 
 ## Preparar antes da aula
 
-1. Publicar o repositório **apenas depois da autorização**.
+1. Abrir https://github.com/Mrc0345/atividade07-devsecops, já publicado com autorização.
 2. Executar `demo/vulneravel` e `demo/corrigido` no GitHub Actions e resolver erros reais.
-3. Salvar os links das execuções em `VALIDACAO.md`. Não há execuções GitHub anteriores prontas enquanto o repositório não for publicado.
+3. Salvar os links das execuções em `VALIDACAO.md`. As execuções reais aprovadas e reprovadas já estão vinculadas no README; confira sua disponibilidade antes da aula.
 4. Rodar novamente a versão segura perto da apresentação. CVEs e disponibilidade de scanners mudam.
 5. Deixar abertas cinco abas: README, workflow, execução vulnerável, execução corrigida e SBOM/relatório ZAP.
 6. Baixar antecipadamente SBOM e relatórios **reais**. São contingência de execução/internet, não substituem a demonstração exigida. Combine a contingência com a professora se a rede da sala falhar.
