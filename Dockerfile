@@ -1,6 +1,6 @@
 # BuildKit: cache Maven local ao build, sem frontend remoto mutavel.
 # Builder: Maven 3.9.11 / Java 21, pinned by manifest digest.
-FROM maven@sha256:922927df2c662cdd47ddb116443d6bec4696cfae3de1a0ddac8fcc7b87ce61ae AS build
+FROM maven@sha256:3175c44b207d6698aecb9bbb5bf285b5b4efcf7f567d6f65d88cd218276a6ab2 AS build
 WORKDIR /build
 COPY pom.xml ./
 COPY src ./src
