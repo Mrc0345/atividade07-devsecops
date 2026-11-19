@@ -1,0 +1,9 @@
+.git
+target
+.tools
+.venv
+reports
+evidence
+docs
+__pycache__
+.env

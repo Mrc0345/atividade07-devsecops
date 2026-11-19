@@ -1,0 +1,11 @@
+# Regras bloqueantes para uma API JSON local; demais achados continuam WARN.
+10021	FAIL	X-Content-Type-Options ausente
+10020	FAIL	Protecao contra clickjacking ausente
+10038	FAIL	Content-Security-Policy ausente
+40018	FAIL	SQL Injection
+40019	FAIL	SQL Injection MySQL
+40020	FAIL	SQL Injection Hypersonic
+40021	FAIL	SQL Injection Oracle
+40022	FAIL	SQL Injection PostgreSQL
+90019	FAIL	Server Side Code Injection
+90020	FAIL	Remote OS Command Injection

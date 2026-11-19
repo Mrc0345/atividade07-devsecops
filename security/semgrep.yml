@@ -1,0 +1,27 @@
+rules:
+  - id: java-command-execution
+    languages: [java]
+    severity: ERROR
+    message: Execucao de comandos do sistema requer revisao e nao e necessaria nesta API.
+    pattern-either:
+      - pattern: Runtime.getRuntime().exec(...)
+      - pattern: new ProcessBuilder(...)
+  - id: java-native-deserialization
+    languages: [java]
+    severity: ERROR
+    message: Desserializacao Java nativa nao permitida na API.
+    pattern: (ObjectInputStream $STREAM).readObject(...)
+  - id: java-sql-string-concatenation
+    languages: [java]
+    severity: ERROR
+    message: Use consultas parametrizadas, nunca concatenacao de SQL.
+    pattern-either:
+      - pattern: $STMT.executeQuery($A + $B)
+      - pattern: $STMT.executeUpdate($A + $B)
+  - id: java-weak-hash
+    languages: [java]
+    severity: ERROR
+    message: Algoritmo de hash criptografico fraco.
+    pattern-either:
+      - pattern: MessageDigest.getInstance("MD5")
+      - pattern: MessageDigest.getInstance("SHA-1")

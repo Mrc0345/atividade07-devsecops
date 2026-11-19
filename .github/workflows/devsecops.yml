@@ -1,0 +1,225 @@
+name: DevSecOps - Atividade 07
+on:
+  push: {}
+  pull_request: {}
+  workflow_dispatch: {}
+permissions:
+  contents: read
+concurrency:
+  group: devsecops-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  secrets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - name: Gitleaks - arquivos e historico
+      run: "mkdir -p reports\ndocker run --rm  -v \"$PWD:/src\" -w /src ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
+        git --redact --report-format json --report-path reports/gitleaks.json --exit-code 1 ."
+    - name: Preservar secrets
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: secrets
+        path: reports/gitleaks.json
+        if-no-files-found: error
+        retention-days: 14
+  sast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - name: Semgrep CE - regras Java versionadas
+      run: "mkdir -p reports\ndocker run --rm  -v \"$PWD:/src\" -w /src semgrep/semgrep@sha256:6e1b04340e60e910fbb4ddbf3c857ab0918f064417ad5ac530014ccb3cf8c8f1
+        semgrep scan --config security/semgrep.yml --metrics=off --disable-version-check --error --strict --json --output reports/semgrep.json
+        src/main/java"
+    - name: Preservar sast
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: sast
+        path: reports/semgrep.json
+        if-no-files-found: error
+        retention-days: 14
+  iac:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - name: Checkov - politica Compose e Dockerfile
+      run: "mkdir -p reports\ndocker compose config --quiet\ndocker run --rm --entrypoint python -v \"$PWD:/src\" -w /src bridgecrew/checkov@sha256:122602cf32cc72286155d39f1f234b7b594818f7b8d7fdf490701620e521368b\
+        \  security/check_compose.py\ndocker run --rm  -v \"$PWD:/src\" -w /src bridgecrew/checkov@sha256:122602cf32cc72286155d39f1f234b7b594818f7b8d7fdf490701620e521368b
+        -f Dockerfile --framework dockerfile --check CKV_DOCKER_2,CKV_DOCKER_3 --output json --output-file-path reports --quiet"
+    - name: Preservar iac
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: iac
+        path: reports/
+        if-no-files-found: error
+        retention-days: 14
+  build:
+    needs:
+    - secrets
+    - sast
+    - iac
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880
+      with:
+        distribution: temurin
+        java-version: '21'
+        cache: maven
+    - name: Testes Maven e SBOM CycloneDX
+      run: ./mvnw -B -ntp verify
+    - name: Preservar sbom-cyclonedx
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: sbom-cyclonedx
+        path: target/bom.json
+        if-no-files-found: error
+        retention-days: 14
+    - name: Preservar tests
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: tests
+        path: target/surefire-reports/
+        if-no-files-found: error
+        retention-days: 14
+  sca:
+    needs:
+    - build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+      with:
+        name: sbom-cyclonedx
+        path: target
+    - name: Trivy SCA - HIGH e CRITICAL sem excecoes
+      run: "mkdir -p reports\ndocker run --rm  -v \"$PWD:/src\" -w /src aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb
+        sbom --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format json --output reports/trivy-sca.json target/bom.json"
+    - name: Preservar sca
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: sca
+        path: reports/trivy-sca.json
+        if-no-files-found: error
+        retention-days: 14
+  image:
+    needs:
+    - build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - name: Construir imagem
+      run: docker build -t tasks-api:${{ github.sha }} .
+    - name: Trivy imagem - HIGH e CRITICAL
+      run: "mkdir -p reports\ndocker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v \"$PWD:/src\" -w /src aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb
+        image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format json --output reports/trivy-image.json tasks-api:${{ github.sha
+        }}"
+    - name: Preservar image-security
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: image-security
+        path: reports/trivy-image.json
+        if-no-files-found: error
+        retention-days: 14
+    - name: Exportar somente imagem aprovada
+      run: docker save tasks-api:${{ github.sha }} | gzip > image.tar.gz
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: approved-image
+        path: image.tar.gz
+        compression-level: 0
+        retention-days: 2
+  dast:
+    needs:
+    - sca
+    - image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+      with:
+        name: approved-image
+        path: .
+    - name: Iniciar imagem aprovada no ambiente temporario
+      run: "docker load -i image.tar.gz\nIMAGE=tasks-api:${{ github.sha }} docker compose -p atividade07-ci up -d --no-build\npython3
+        scripts/smoke.py"
+    - name: ZAP API Scan - ativo e com relatorios
+      run: "mkdir -p reports/zap\ncp security/zap-rules.tsv reports/zap/zap-rules.tsv\nchmod 777 reports/zap\ndocker run --rm --network
+        host -v \"$PWD/reports/zap:/zap/wrk:rw\" ghcr.io/zaproxy/zaproxy@sha256:9624669db72f54d86c4b46a7064518bd9bf79d8c61a4c31befa9923489f328af
+        zap-api-scan.py -t http://127.0.0.1:8080/openapi.json -f openapi -c zap-rules.tsv -I -T 5 -J zap.json -r zap.html\npython3 scripts/zap_gate.py
+        reports/zap/zap.json"
+    - name: Preservar dast
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: dast
+        path: reports/zap/
+        if-no-files-found: error
+        retention-days: 14
+    - name: Encerrar ambiente temporario
+      run: "docker compose -p atividade07-ci logs --no-color\ndocker compose -p atividade07-ci down --remove-orphans"
+      if: always()
+  delivery:
+    needs:
+    - secrets
+    - sast
+    - iac
+    - build
+    - sca
+    - image
+    - dast
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+      with:
+        name: approved-image
+        path: .
+    - name: Entrega - comprovacao final da imagem aprovada
+      run: "docker load -i image.tar.gz\nIMAGE=tasks-api:${{ github.sha }} docker compose -p atividade07-delivery up -d --no-build\n\
+        python3 scripts/smoke.py\necho \"ENTREGA APROVADA: imagem iniciou e endpoints responderam apos todos os gates.\" >> \"$GITHUB_STEP_SUMMARY\""
+    - name: Encerrar entrega temporaria
+      run: docker compose -p atividade07-delivery down --remove-orphans
+      if: always()

@@ -1,0 +1,9 @@
+{
+  "semgrep/semgrep:1.186.0": "semgrep/semgrep@sha256:6e1b04340e60e910fbb4ddbf3c857ab0918f064417ad5ac530014ccb3cf8c8f1",
+  "eclipse-temurin:21-jre-alpine": "eclipse-temurin@sha256:ac05c3c42b7c2f1a52c9bd52f01041fa1958231b15ebeae7420429cbc5baf474",
+  "aquasec/trivy:0.76.2": "aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb",
+  "ghcr.io/gitleaks/gitleaks:v8.30.1": "ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f",
+  "maven:3.9.11-eclipse-temurin-21-alpine": "maven@sha256:922927df2c662cdd47ddb116443d6bec4696cfae3de1a0ddac8fcc7b87ce61ae",
+  "ghcr.io/zaproxy/zaproxy:stable": "ghcr.io/zaproxy/zaproxy@sha256:9624669db72f54d86c4b46a7064518bd9bf79d8c61a4c31befa9923489f328af",
+  "bridgecrew/checkov:3.4.5": "bridgecrew/checkov@sha256:122602cf32cc72286155d39f1f234b7b594818f7b8d7fdf490701620e521368b"
+}

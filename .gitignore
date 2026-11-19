@@ -1,0 +1,10 @@
+target/
+.tools/
+.venv/
+reports/
+evidence/
+*.log
+.env
+__pycache__/
+.idea/
+.vscode/

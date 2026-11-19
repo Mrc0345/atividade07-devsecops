@@ -1,0 +1,47 @@
+[
+  {
+    "repo": "gitleaks/gitleaks",
+    "version": "v8.30.1",
+    "sha": "83d9cd684c87d95d656c1458ef04895a7f1cbd8e"
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "version": "v0.76.2",
+    "sha": "3f6334d223b52188324af3b9923b4249cd206652"
+  },
+  {
+    "repo": "semgrep/semgrep",
+    "version": "v1.186.0",
+    "sha": "a5844e7c2d9d04548f86048f525d467a00742656"
+  },
+  {
+    "repo": "bridgecrewio/checkov",
+    "version": "3.4.5",
+    "sha": "af20f73b3f9ef72c04c8a524ed41f6c5f39a3490"
+  },
+  {
+    "repo": "actions/checkout",
+    "version": "v7.0.1",
+    "sha": "3d3c42e5aac5ba805825da76410c181273ba90b1"
+  },
+  {
+    "repo": "actions/setup-java",
+    "version": "v6.3.0",
+    "sha": "d1374f8ac74474200d16ef8ecee22c7ae7a51880"
+  },
+  {
+    "repo": "actions/setup-python",
+    "version": "v7.1.0",
+    "sha": "6d4fd22b20465ccc0f7354476588e8df7c9ca0e0"
+  },
+  {
+    "repo": "actions/upload-artifact",
+    "version": "v7.0.2",
+    "sha": "cf430e030ddbb5b0abf93d22962f4752f3646cd9"
+  },
+  {
+    "repo": "actions/download-artifact",
+    "version": "v8.0.2",
+    "sha": "9000827ccba6bdab643e8b6fd33ac0654aef8333"
+  }
+]

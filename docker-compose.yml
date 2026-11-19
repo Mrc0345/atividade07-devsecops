@@ -1,0 +1,19 @@
+services:
+  api:
+    image: ${IMAGE:-atividade07-tasks:local}
+    build: .
+    user: "10001:10001"
+    privileged: false
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m,mode=1777
+    ports:
+      - "127.0.0.1:${PORT:-8080}:8080"
+    environment:
+      PORT: "8080"
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    restart: "no"
