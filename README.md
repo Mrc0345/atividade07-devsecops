@@ -128,3 +128,5 @@ pom.xml, mvnw, mvnw.cmd           Build reproduzível
 - [ZAP API Scan](https://www.zaproxy.org/docs/docker/api-scan/)
 
 Runners Linux padrão em repositórios públicos têm computação gratuita; artefatos e cache possuem franquias próprias. Confira o uso e mantenha orçamento de gastos adequado à conta. Não são usados runners grandes ou serviços pagos. [Cobrança oficial do GitHub Actions](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
+
+No GitHub Actions, o job build disponibiliza application-jar e o job image usa o target Docker ci para empacotar exatamente esse JAR testado. O build multi-stage padrao continua disponivel para uso local. Isso evita uma segunda resolucao Maven dentro do Docker e vincula a imagem ao artefato aprovado.

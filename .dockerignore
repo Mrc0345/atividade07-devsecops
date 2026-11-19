@@ -1,5 +1,6 @@
 .git
-target
+target/*
+!target/tasks-api.jar
 .tools
 .venv
 reports
