@@ -1,0 +1,33 @@
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 1 file with 4 Code rules:
+  Scanning 1 file with 4 java rules.
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                              
+    reports/UnsafeFixture.java
+   ❯❯❱ security.java-command-execution
+          ❰❰ Blocking ❱❱
+          Execucao de comandos do sistema requer revisao e nao e necessaria nesta API.
+                                                                                      
+            1┆ class UnsafeFixture { void run(String input) throws Exception {
+               Runtime.getRuntime().exec(input); } }                          
+
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 1 (1 blocking)
+ • Rules run: 4
+ • Targets scanned: 1
+ • Parsed lines: ~100.0%
+ • No ignore information available
+Ran 4 rules on 1 file: 1 finding.

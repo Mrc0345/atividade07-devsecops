@@ -1,0 +1,44 @@
+[
+  {
+    "check_id": "CKV_COMPOSE_1",
+    "service": "api",
+    "result": "PASSED",
+    "description": "Nao permitir modo privilegiado"
+  },
+  {
+    "check_id": "CKV_COMPOSE_2",
+    "service": "api",
+    "result": "PASSED",
+    "description": "Usuario explicitamente nao root"
+  },
+  {
+    "check_id": "CKV_COMPOSE_3",
+    "service": "api",
+    "result": "PASSED",
+    "description": "Sistema de arquivos somente leitura"
+  },
+  {
+    "check_id": "CKV_COMPOSE_4",
+    "service": "api",
+    "result": "PASSED",
+    "description": "Remover todas as capabilities"
+  },
+  {
+    "check_id": "CKV_COMPOSE_5",
+    "service": "api",
+    "result": "PASSED",
+    "description": "Impedir ganho de privilegios"
+  },
+  {
+    "check_id": "CKV_COMPOSE_6",
+    "service": "api",
+    "result": "PASSED",
+    "description": "Nao compartilhar namespaces do host"
+  },
+  {
+    "check_id": "CKV_COMPOSE_7",
+    "service": "api",
+    "result": "PASSED",
+    "description": "Nao montar sockets Docker nem dispositivos"
+  }
+]

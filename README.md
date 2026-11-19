@@ -1,6 +1,6 @@
 # Atividade 07 - Pipeline DevSecOps
 
-API de tarefas em Java 21 / Spring Boot, com armazenamento em memória e esteira GitHub Actions. Projeto acadêmico independente, sem frontend, banco externo, autenticação complexa ou infraestrutura paga. Professora: Ramyres Pereira Aquino.
+API de tarefas em Java 21 / Spring Boot 4.1.2, com armazenamento em memória e esteira GitHub Actions. Projeto acadêmico independente, sem frontend, banco externo, autenticação complexa ou infraestrutura paga. Professora: Ramyres Pereira Aquino.
 
 **Apresentação sem notebook configurado:** use somente navegador, internet e acesso à conta GitHub. Os runners executam Java, Docker e scanners. Veja [o roteiro pelo navegador](docs/APRESENTACAO.md). Publicação e execuções no GitHub ainda dependem da autorização do proprietário.
 
@@ -84,7 +84,7 @@ docker run --rm --entrypoint python -v "${PWD}:/src" -w /src bridgecrew/checkov:
 
 Para comandos com imagens exatamente fixadas, use os digests de `security/images.lock.json`; as tags acima são atalhos para uso interativo. A pipeline usa somente digests.
 
-Estados Git: `main` e `demo/corrigido` representam o código seguro; `demo/vulneravel` representa a falha controlada. Esses estados serão criados localmente após validar o conjunto. O roteiro usa o seletor de branch de **Run workflow**, sem editar código ao vivo.
+Estados Git: `main` e `demo/corrigido` representam o código seguro; `demo/vulneravel` representa a falha controlada. Esses estados são mantidos em branches locais, sem publicação automática. O roteiro usa o seletor de branch de **Run workflow**, sem editar código ao vivo.
 
 ## Publicar - somente após autorização
 
@@ -118,7 +118,7 @@ pom.xml, mvnw, mvnw.cmd           Build reproduzível
 
 ## Referências oficiais consultadas
 
-- [Spring Boot 3.5 e Java](https://docs.spring.io/spring-boot/3.5/system-requirements.html)
+- [Spring Boot e Java](https://docs.spring.io/spring-boot/system-requirements.html)
 - [CycloneDX Maven Plugin](https://cyclonedx.github.io/cyclonedx-maven-plugin/)
 - [Gitleaks](https://github.com/gitleaks/gitleaks)
 - [Semgrep CLI](https://semgrep.dev/docs/cli-reference)
@@ -126,3 +126,5 @@ pom.xml, mvnw, mvnw.cmd           Build reproduzível
 - [Checkov e frameworks](https://www.checkov.io/)
 - [API BaseCheck do Checkov](https://github.com/bridgecrewio/checkov/blob/main/checkov/common/checks/base_check.py)
 - [ZAP API Scan](https://www.zaproxy.org/docs/docker/api-scan/)
+
+Runners Linux padr�o em reposit�rios p�blicos t�m computa��o gratuita; artefatos e cache possuem franquias pr�prias. Confira o uso e mantenha or�amento de gastos adequado � conta. N�o s�o usados runners grandes ou servi�os pagos. [Cobran�a oficial do GitHub Actions](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
