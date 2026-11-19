@@ -54,3 +54,7 @@ ValidaÃ§Ã£o local em 18/11/2026 (America/Sao_Paulo), Windows com Docker Desk
 - **100001 / risco baixo - Content-Type em requisições de fuzzing à raiz:** respostas de erro podem usar application/problem+json em vez do tipo inferido pelo scanner. Os endpoints válidos e os erros esperados são testados. Não foi acrescentada supressão de regra.
 
 As três advertências permanecem visíveis no relatório. A regra CORP foi corrigida e passou. O ZAP importou cinco URLs/operações para exercitar a API.
+
+## Ajuste ao enunciado original
+
+O roteiro foi corrigido para dois commits reais pelo navegador: falha por push/PR e nova correção por push. Somente workflow_dispatch não satisfaz essa exigência. Validar os disparos reais e medir o tempo no GitHub antes da aula; a execução cloud continua pendente de publicação autorizada.

@@ -84,7 +84,7 @@ docker run --rm --entrypoint python -v "${PWD}:/src" -w /src bridgecrew/checkov:
 
 Para comandos com imagens exatamente fixadas, use os digests de `security/images.lock.json`; as tags acima são atalhos para uso interativo. A pipeline usa somente digests.
 
-Estados Git: `main` e `demo/corrigido` representam o código seguro; `demo/vulneravel` representa a falha controlada. Esses estados são mantidos em branches locais, sem publicação automática. O roteiro usa o seletor de branch de **Run workflow**, sem editar código ao vivo.
+Estados Git: `main` e `demo/corrigido` representam o código seguro; `demo/vulneravel` representa a falha controlada. Esses estados são mantidos em branches locais, sem publicação automática. Para atender ao enunciado original, o roteiro principal faz dois commits reais pelo editor do GitHub na branch demo/ao-vivo: primeiro introduz privileged: true, depois corrige para false. Run workflow e as branches prontas servem somente para ensaio e contingência.
 
 ## Publicar - somente após autorização
 
@@ -127,4 +127,4 @@ pom.xml, mvnw, mvnw.cmd           Build reproduzível
 - [API BaseCheck do Checkov](https://github.com/bridgecrewio/checkov/blob/main/checkov/common/checks/base_check.py)
 - [ZAP API Scan](https://www.zaproxy.org/docs/docker/api-scan/)
 
-Runners Linux padr�o em reposit�rios p�blicos t�m computa��o gratuita; artefatos e cache possuem franquias pr�prias. Confira o uso e mantenha or�amento de gastos adequado � conta. N�o s�o usados runners grandes ou servi�os pagos. [Cobran�a oficial do GitHub Actions](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
+Runners Linux padrão em repositórios públicos têm computação gratuita; artefatos e cache possuem franquias próprias. Confira o uso e mantenha orçamento de gastos adequado à conta. Não são usados runners grandes ou serviços pagos. [Cobrança oficial do GitHub Actions](https://docs.github.com/en/billing/concepts/product-billing/github-actions).

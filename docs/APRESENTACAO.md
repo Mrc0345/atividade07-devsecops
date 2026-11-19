@@ -11,20 +11,35 @@ Não depende de Java, Maven, Docker, VS Code ou terminal no notebook da sala. Pr
 5. Deixar abertas cinco abas: README, workflow, execução vulnerável, execução corrigida e SBOM/relatório ZAP.
 6. Baixar antecipadamente SBOM e relatórios **reais**. São contingência de execução/internet, não substituem a demonstração exigida. Combine a contingência com a professora se a rede da sala falhar.
 
-## Roteiro e cliques
+## Roteiro oficial e cliques - alteração real ao vivo
+
+O enunciado original exige push ou PR com falha grave e depois um novo push com a correção. Rodar somente workflow_dispatch em branches já prontas serve para ensaiar, mas não substitui essa dinâmica.
+
+### Preparar a branch da apresentação
+
+Antes da aula, crie uma branch `demo/ao-vivo` a partir da `main` segura pelo seletor de branches no GitHub. Valide previamente o acesso ao editor e aos Actions. Mantenha `main` intacta e não faça merge da falha.
 
 | Tempo | Ação no navegador | O que explicar |
 |---|---|---|
-| 0-2 min | Abrir README, controlador Java e Dockerfile | API pequena, validação, memória, usuário não root |
-| 2-4 min | Abrir `.github/workflows/devsecops.yml` | Gatilhos, scanners, `needs`, permissões read-only, SHA/digest |
-| 4-6 min | Actions -> DevSecOps -> Run workflow -> branch `demo/vulneravel` -> Run | Mostrar única alteração `privileged: true`; nenhum contêiner inseguro é iniciado |
-| 6-8 min | Abrir job IaC e log Checkov | `FAILED CKV_COMPOSE_1`, workflow Failure; jobs dependentes pulados |
-| 8-10 min | Abrir comparação das branches e disparar `demo/corrigido` | Correção explícita para false, sem desativar scanner |
-| 10-12 min | Abrir execução corrigida real anterior enquanto a nova roda | Testes, SCA, imagem, ZAP e entrega aprovada; dizer que é uma execução anterior |
-| 12-14 min | Artifacts -> sbom-cyclonedx; abrir bom.json | Mostrar inventário de componentes; mostrar também relatório ZAP e smoke da entrega |
-| 14-15 min | Conferir nova execução e responder perguntas | Distinguir resultado ao vivo, resultado anterior e limitações |
+| 0-2 min | Mostrar API, Dockerfile, Compose e workflow | Visão geral das etapas e dependências entre jobs |
+| 2-3 min | Selecionar `demo/ao-vivo`, abrir docker-compose.yml e clicar no lápis | A alteração é real e controlada |
+| 3-4 min | Trocar `privileged: false` por `privileged: true`; Commit changes na própria branch | O commit feito pelo navegador gera evento push e dispara a esteira automaticamente |
+| 4-7 min | Actions -> execução do novo commit -> iac | Mostrar FAILED CKV_COMPOSE_1, workflow reprovado e jobs posteriores bloqueados |
+| 7-8 min | Voltar ao Compose da mesma branch e corrigir para `privileged: false`; fazer novo commit | Corrigir a causa, sem desativar o scanner |
+| 8-12 min | Abrir a execução automática do commit corrigido | Mostrar aprovação dos gates, entrega temporária e artefato sbom-cyclonedx |
+| 12-15 min | Arguição | Explicar ferramentas, critérios e limitações |
 
-Não prometa que uma pipeline completa fria termina em 2 minutos. O estado vulnerável deve falhar cedo; a execução segura pode ultrapassar a janela. As execuções anteriores precisam ser autênticas e identificadas como anteriores.
+Nunca inicie um contêiner com a configuração vulnerável. A pipeline faz análise estática antes do build e da entrega.
+
+Se preferir usar um PR, na primeira alteração escolha criar uma nova branch, abra o PR para main e depois faça o commit de correção na mesma branch do PR. Os eventos push e pull_request podem produzir duas execuções; apresente uma delas e identifique o commit correto. Não use pull_request_target para executar código não confiável.
+
+Uma edição no GitHub não exige Git instalado no notebook. Requer permissão de escrita na branch. Não faça a demonstração numa branch protegida que impeça os commits necessários.
+
+A execução segura pode demorar mais do que a janela da aula. Ensaie antes e use resultados anteriores reais apenas como contingência claramente identificada; a exigência de disparar a falha e a correção ao vivo permanece. Se o tempo ou a rede impedirem a conclusão, alinhe a contingência com a professora.
+
+As branches `demo/vulneravel` e `demo/corrigido` e o botão Run workflow ficam como apoio para ensaios, não como substitutos dos novos commits ao vivo.
+
+Referências: [editar arquivos pelo GitHub](https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files) e [eventos que disparam workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows).
 
 ## Frases de apoio
 
