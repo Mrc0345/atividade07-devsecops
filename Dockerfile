@@ -6,7 +6,7 @@ COPY pom.xml ./
 COPY src ./src
 RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp package
 
-FROM eclipse-temurin@sha256:ac05c3c42b7c2f1a52c9bd52f01041fa1958231b15ebeae7420429cbc5baf474 AS base
+FROM eclipse-temurin@sha256:ce2ef9d2d67a68de5e196d4de9d743327c44a10b57fe02ec39f572c652cacfd3 AS base
 WORKDIR /app
 ENV PORT=8080
 USER 10001:10001
